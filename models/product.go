@@ -1,8 +1,8 @@
 package models
 
 import (
+	"fmt"
 	"golang-shop/utils"
-	"time"
 )
 
 type Product struct {
@@ -25,6 +25,23 @@ func (product *Product) Validate() (map[string]interface{}, bool) {
 	return utils.Message(true, "success"), true
 }
 
-func (product *Product) SetTimeStamp() {
-	product.CreatedAt = int(time.Now().Unix())
+func (product *Product) Create() map[string]interface{} {
+	if resp, ok := product.Validate(); !ok {
+		return resp
+	}
+
+	GetDB().Model(product).Insert()
+	resp := utils.Message(true, "success")
+	resp["product"] = product
+	return resp
+}
+
+func GetProducts() interface{} {
+	var products []Product
+	err := GetDB().Model(&products).Select()
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+	return products
 }
