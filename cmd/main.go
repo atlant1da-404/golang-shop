@@ -1,29 +1,13 @@
 package main
 
 import (
-	"fmt"
-	"golang-shop/config"
-	"golang-shop/internal/handler"
 	"golang-shop/internal/server"
-
-	"github.com/sirupsen/logrus"
-)
-
-var (
-	cfg = config.Init()
-	hdl = handler.NewHandler()
+	"log"
 )
 
 func main() {
-
-	server := server.New(
-		cfg.HTTP.Port,
-		hdl.InitRoutes(),
-	)
-
-	if err := server.Run(); err != nil {
-		logrus.Fatalf("error with running server %s", err.Error())
+	err := server.NewApp().Run()
+	if err != nil {
+		log.Fatalf("Server in moment: %+v", err.Error())
 	}
-
-	fmt.Println("rest-api succesfully started")
 }
