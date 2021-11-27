@@ -1,12 +1,14 @@
 package models
 
-import "github.com/jmoiron/sqlx"
+import (
+	"database/sql"
+)
 
 type SqlPostgres struct {
-	DB *sqlx.DB
+	DB *sql.DB
 }
 
-func NewSqlPostgres(db *sqlx.DB) *SqlPostgres {
+func NewSqlPostgres(db *sql.DB) *SqlPostgres {
 	return &SqlPostgres{
 		DB: db,
 	}

@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"database/sql"
 	"golang-shop/config"
 	"golang-shop/internal/handler"
 	"golang-shop/internal/models"
@@ -10,7 +11,7 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 )
 
@@ -62,9 +63,12 @@ func (a *App) Run() error {
 }
 
 func (a *App) ConnectDb() error {
-	sql, err := sqlx.Connect(
-		"pgx", cfg.String(),
-	)
+	sql, err := sql.Open("postgres", cfg.String())
+	if err != nil {
+		return err
+	}
+
+	err = sql.Ping()
 	if err != nil {
 		return err
 	}
