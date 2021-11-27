@@ -6,6 +6,8 @@ type SqlPostgres struct {
 	DB *sqlx.DB
 }
 
-func NewSqlPostgres() *SqlPostgres {
-	return &SqlPostgres{}
+func NewSqlPostgres(db *sqlx.DB) *SqlPostgres {
+	return &SqlPostgres{
+		DB: db,
+	}
 }

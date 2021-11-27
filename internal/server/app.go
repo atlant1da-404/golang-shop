@@ -4,11 +4,13 @@ import (
 	"context"
 	"golang-shop/config"
 	"golang-shop/internal/handler"
+	"golang-shop/internal/models"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
 )
 
@@ -37,6 +39,10 @@ func (a *App) Run() error {
 		WriteTimeout:   wTime,
 		MaxHeaderBytes: MaxHeaderBytes,
 	}
+	err := a.ConnectDb()
+	if err != nil {
+		logrus.Fatalf("error by connect to db %+v", err.Error())
+	}
 
 	go func() {
 		err := a.httpServer.ListenAndServe()
@@ -53,4 +59,15 @@ func (a *App) Run() error {
 	defer shutdown()
 
 	return a.httpServer.Shutdown(ctx)
+}
+
+func (a *App) ConnectDb() error {
+	sql, err := sqlx.Connect(
+		"pgx", cfg.String(),
+	)
+	if err != nil {
+		return err
+	}
+	models.NewSqlPostgres(sql)
+	return nil
 }
