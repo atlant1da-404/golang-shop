@@ -46,3 +46,15 @@ func GetProducts() interface{} {
 	}
 	return products
 }
+
+func GetProduct(id int) interface{} {
+	product := &Product{
+		Id: id,
+	}
+	err := GetDB().Model(product).WherePK().Select()
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+	return product
+}

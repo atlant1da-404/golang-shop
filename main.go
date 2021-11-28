@@ -21,6 +21,8 @@ func main() {
 		controllers.CreateProduct).Methods("POST")
 	router.HandleFunc("/product/",
 		controllers.GetProducts).Methods("GET")
+	router.HandleFunc("/product/{id}",
+		controllers.GetProduct).Methods("GET")
 
 	err := http.ListenAndServe(":"+port, router)
 	if err != nil {
