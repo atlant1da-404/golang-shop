@@ -1,6 +1,7 @@
-CREATE TABLE "product" (
-    "id"            serial PRIMARY KEY,
-    "title"         varchar(255) NOT NULL,
-    "description"   varchar(500),
-    "created_at"    int
-)
+CREATE TABLE product
+(
+    id             serial         not null unique ,
+    title           varchar(255)   not null,
+    description    varchar (255),
+    created_at     int            not null
+);

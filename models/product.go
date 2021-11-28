@@ -6,10 +6,11 @@ import (
 )
 
 type Product struct {
-	Id          int    `sql:"id" json:"id"`
-	Title       string `sql:"title" json:"title"`
-	Description string `sql:"description" json:"description"`
-	CreatedAt   int    `sql:"created_at"`
+	tableName   struct{} `sql:"product" pg:"product" json:"-"`
+	Id          int      `sql:"id" json:"id"`
+	Title       string   `sql:"title" json:"title"`
+	Description string   `sql:"description" json:"description"`
+	CreatedAt   int      `sql:"created_at"`
 }
 
 func (product *Product) Validate() (map[string]interface{}, bool) {
